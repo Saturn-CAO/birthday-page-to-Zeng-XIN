@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎉 心心酱生日快乐！ 🎂</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      overflow-y: auto;
+      background: #2e1b1b !important;
+      font-family: "Comic Sans MS", cursive;
+      color: white;
+      text-align: center;
+    }
+
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      margin-top: 60px;
+      font-size: 3em;
+      text-shadow: 0 0 20px #fff;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff6ec7; }
+      to { text-shadow: 0 0 30px #ffff99; }
+    }
+
+    /* 贺卡 */
+    .card {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.4);
+      backdrop-filter: blur(10px);
+      width: 80%;
+      max-width: 400px;
+      margin: 40px auto;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.5);
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card h2 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 1.1em;
+      line-height: 1.6em;
+    }
+
+    /* 轮播图 */
+    .slideshow {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 30px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 20px white;
+    }
+
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .slideshow img.active {
+      opacity: 1;
+    }
+
+    /* 音乐按钮 */
+    #music {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: rgba(255,255,255,0.3);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+      transition: transform 0.2s;
+    }
+    #music:hover {
+      transform: scale(1.1);
+    }
+
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 心心酱19岁生日快乐！ 🎉</h1>
+
+  <div class="card">
+    <h2>祝你永远开心 ✨</h2>
+    <p>愿你的每一天都像今天一样灿烂、快乐！<br>
+   同时不要把学校炸了🎂💖</p>
+  </div>
+
+  <div class="slideshow">
+    <img src="1.jpg" class="active">
+    <img src="2.jpg">
+    <img src="3.jpg">
+    <img src="4.jpg">
+    <img src="5.jpg">
+<img src="6.jpg">
+<img src="7.jpg">
+<img src="8.jpg">
+<img src="9.jpg">
+<img src="10.jpg">
+<img src="11.jpg">
+<img src="12.jpg">
+<img src="13.jpg">
+<img src="14.jpg">
+  </div>
+
+  <button id="music">🎵</button>
+
+<audio id="bgm" loop autoplay>
+    <source src="1.mp3" type="audio/mpeg">
+  </audio>
+
+  <canvas id="fireworks"></canvas>
+
+  <script>
+    // 🎆 烟花动画
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+    const fireworks = [];
+    function Firework(x, y, color) {
+      this.x = x; this.y = y;
+      this.color = color;
+      this.radius = 2;
+      this.alpha = 1;
+      this.vel = {x: (Math.random()-0.5)*8, y: (Math.random()-0.5)*8};
+    }
+    Firework.prototype.update = function() {
+      this.x += this.vel.x;
+      this.y += this.vel.y;
+      this.alpha -= 0.01;
+    };
+    function animate() {
+      ctx.fillStyle = 'rgba(0,0,0,0.2)';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      fireworks.forEach((f,i)=>{
+        f.update();
+        ctx.beginPath();
+        ctx.arc(f.x,f.y,f.radius,0,Math.PI*2);
+        ctx.fillStyle = `rgba(${f.color},${f.alpha})`;
+        ctx.fill();
+        if(f.alpha <= 0) fireworks.splice(i,1);
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+    setInterval(()=>{
+      const x = Math.random()*innerWidth;
+      const y = Math.random()*innerHeight/2;
+      for(let i=0;i<80;i++){
+        fireworks.push(new Firework(x, y, `${Math.random()*255},${Math.random()*255},${Math.random()*255}`));
+      }
+    }, 1000);
+
+    // 🎵 音乐控制
+    const music = document.getElementById('music');
+    const bgm = document.getElementById('bgm');
+    let playing = true;
+    music.onclick = ()=>{
+      if(playing){
+        bgm.pause();
+        music.textContent = '▶️';
+      } else {
+        bgm.play();
+        music.textContent = '⏸️';
+      }
+      playing = !playing;
+    };
+
+    // 🖼️ 照片轮播
+    const slides = document.querySelectorAll('.slideshow img');
+    let current = 0;
+    setInterval(()=>{
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 4000);
+  </script>
+<div style="height: 20vh;"></div>
+<div style="height: 20vh;"></div>
+</body>
+</html>
