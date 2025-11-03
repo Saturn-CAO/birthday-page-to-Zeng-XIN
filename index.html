@@ -15,12 +15,6 @@
       text-align: center;
     }
 
-    @keyframes bgShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
     h1 {
       margin-top: 60px;
       font-size: 3em;
@@ -108,6 +102,26 @@
       transform: scale(1.1);
     }
 
+    /* 悬浮提示 */
+    #music-tip {
+      position: fixed;
+      bottom: 100px;
+      right: 25px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 14px;
+      box-shadow: 0 0 10px #fff;
+      z-index: 1000;
+      animation: floatTip 1.5s infinite alternate;
+    }
+
+    @keyframes floatTip {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
     canvas {
       position: fixed;
       top: 0; left: 0;
@@ -119,6 +133,11 @@
 </head>
 <body>
   <h1>🎉 心心酱19岁生日快乐！ 🎉</h1>
+
+  <div id="music-tip">
+    🎵 别忘了双击打开音乐哦！
+    <span id="music-tip-close" style="cursor:pointer; margin-left:10px;">✖</span>
+  </div>
 
   <div class="card">
     <h2>祝你永远开心 ✨</h2>
@@ -132,20 +151,20 @@
     <img src="3.jpg">
     <img src="4.jpg">
     <img src="5.jpg">
-<img src="6.jpg">
-<img src="7.jpg">
-<img src="8.jpg">
-<img src="9.jpg">
-<img src="10.jpg">
-<img src="11.jpg">
-<img src="12.jpg">
-<img src="13.jpg">
-<img src="14.jpg">
+    <img src="6.jpg">
+    <img src="7.jpg">
+    <img src="8.jpg">
+    <img src="9.jpg">
+    <img src="10.jpg">
+    <img src="11.jpg">
+    <img src="12.jpg">
+    <img src="13.jpg">
+    <img src="14.jpg">
   </div>
 
   <button id="music">🎵</button>
 
-<audio id="bgm" loop autoplay>
+  <audio id="bgm" loop autoplay>
     <source src="1.mp3" type="audio/mpeg">
   </audio>
 
@@ -216,8 +235,14 @@
       current = (current + 1) % slides.length;
       slides[current].classList.add('active');
     }, 4000);
+
+    // 悬浮提示关闭
+    document.getElementById('music-tip-close').onclick = ()=>{
+      document.getElementById('music-tip').style.display = 'none';
+    };
   </script>
-<div style="height: 20vh;"></div>
-<div style="height: 20vh;"></div>
+
+  <div style="height: 20vh;"></div>
+  <div style="height: 20vh;"></div>
 </body>
 </html>
